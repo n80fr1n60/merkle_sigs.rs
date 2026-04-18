@@ -12,10 +12,6 @@
 
 //! `merkle_sigs` implements Merkle signatures in Rust.
 
-extern crate lamport_sigs;
-extern crate merkle;
-extern crate ring;
-
 mod signatures;
 
 pub use merkle::Proof;
