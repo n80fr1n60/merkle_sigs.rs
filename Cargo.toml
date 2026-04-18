@@ -12,8 +12,8 @@ edition       = "2018"
 
 [dependencies]
 ring         = "0.17"
-lamport_sigs = { git = "https://github.com/n80fr1n60/lamport_sigs.rs", branch = "modernize" }
-merkle       = { git = "https://github.com/n80fr1n60/merkle.rs", branch = "modernize", features = ["serialization-protobuf"] }
+lamport_sigs = { git = "https://github.com/n80fr1n60/lamport_sigs.rs", branch = "master" }
+merkle       = { git = "https://github.com/n80fr1n60/merkle.rs", branch = "master", features = ["serialization-protobuf"] }
 
 [package.metadata.release]
 sign-commit                 = true
