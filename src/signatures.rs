@@ -2,7 +2,7 @@ use lamport_sigs::{PrivateKey, PublicKey};
 use merkle::{Hashable, MerkleTree, Proof};
 use ring::digest::{Algorithm, Context};
 use std::io;
-use std::io::{Error, ErrorKind};
+use std::io::Error;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 /// A wrapper struct around a Lamport public key that implements Hashable.
@@ -24,9 +24,9 @@ impl Hashable for MerklePublicKey {
     }
 }
 
-impl Into<Vec<u8>> for MerklePublicKey {
-    fn into(self) -> Vec<u8> {
-        self.key.to_bytes()
+impl From<MerklePublicKey> for Vec<u8> {
+    fn from(mpk: MerklePublicKey) -> Vec<u8> {
+        mpk.key.to_bytes()
     }
 }
 
@@ -37,10 +37,9 @@ pub type MerkleSignature = (Vec<Vec<u8>>, Proof<MerklePublicKey>);
 pub type MerkleSignedData<T> = (Vec<T>, MerkleSignature);
 
 fn signing_error(reason: &str) -> Error {
-    Error::new(
-        ErrorKind::Other,
-        format!("A signature could not be produced because {}", reason),
-    )
+    Error::other(format!(
+        "A signature could not be produced because {reason}"
+    ))
 }
 
 /// Signs the entries of the data vector
@@ -96,7 +95,7 @@ where
 }
 
 fn verif_error(reason: &str) -> Error {
-    Error::new(ErrorKind::Other, reason)
+    Error::other(reason)
 }
 
 /// Verifies the signature of the data. Returns an error if data couldn't be verified.

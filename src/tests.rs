@@ -1,20 +1,19 @@
-#![cfg(test)]
-use ring::digest::{Algorithm, SHA512};
 use crate::signatures::{sign_data_vec, verify_data_vec_signature, MerklePublicKey};
-use std::collections::HashSet;
 use crate::Proof;
 use crate::PublicKey;
+use ring::digest::{Algorithm, SHA512};
+use std::collections::HashSet;
 
 #[allow(non_upper_case_globals)]
-static digest: &'static Algorithm = &SHA512;
+static digest: &Algorithm = &SHA512;
 
 #[test]
 fn test_signature_verification_passes() {
     let vec = vec!["0", "1", "2"];
     let signatures = sign_data_vec(&vec, digest).unwrap();
-    let ref s0 = signatures[0];
-    let ref s1 = signatures[1];
-    let ref s2 = signatures[2];
+    let s0 = &signatures[0];
+    let s1 = &signatures[1];
+    let s2 = &signatures[2];
 
     let (_, ref proof) = signatures[2];
     let root_hash = proof.root_hash.clone();
@@ -50,7 +49,7 @@ fn test_different_leaf_keys() {
         if !leafs.contains(&leaf) {
             leafs.insert(leaf);
         } else {
-            assert!(false, "Duplicate leaf values");
+            panic!("Duplicate leaf values");
         }
     }
 }
