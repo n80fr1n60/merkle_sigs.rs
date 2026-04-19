@@ -78,3 +78,33 @@ fn serialization() {
     let data: Vec<u8> = String::from("2").into_bytes();
     assert!(verify_data_vec_signature(data, &s2, &root_hash).is_ok());
 }
+
+#[test]
+fn test_signature_verification_fails_with_wrong_root_hash() {
+    let vec = vec!["0", "1", "2"];
+    let signatures = sign_data_vec(&vec, digest).unwrap();
+    let signature = &signatures[2];
+
+    let (_, proof) = signature;
+    let mut wrong_root_hash = proof.root_hash.clone();
+    wrong_root_hash[0] ^= 0x01;
+
+    let err = verify_data_vec_signature(vec[2], signature, &wrong_root_hash).unwrap_err();
+    assert_eq!(err.to_string(), "The inclusion proof failed to validate.");
+}
+
+#[test]
+fn test_signature_verification_fails_with_wrong_data() {
+    let vec = vec!["0", "1", "2"];
+    let signatures = sign_data_vec(&vec, digest).unwrap();
+    let signature = &signatures[2];
+
+    let (_, proof) = signature;
+    let root_hash = proof.root_hash.clone();
+
+    let err = verify_data_vec_signature("tampered", signature, &root_hash).unwrap_err();
+    assert_eq!(
+        err.to_string(),
+        "The signature could not be properly verified."
+    );
+}
