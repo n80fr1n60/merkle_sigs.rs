@@ -8,7 +8,7 @@ readme        = "README.md"
 documentation = "https://docs.rs/merkle_sigs"
 homepage      = "https://github.com/SpinResearch/merkle_sigs.rs"
 repository    = "https://github.com/SpinResearch/merkle_sigs.rs"
-edition       = "2018"
+edition       = "2021"
 
 [dependencies]
 ring         = "0.17"
@@ -23,4 +23,3 @@ post-release-commit-message = "Start next development iteration {{version}}."
 tag-message                 = "Release version {{version}}."
 doc-commit-message          = "Update documentation."
 dev-version-ext             = "pre"
-
